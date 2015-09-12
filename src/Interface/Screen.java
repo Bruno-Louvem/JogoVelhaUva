@@ -15,7 +15,7 @@ public abstract class Screen {
         System.out.print(text);
     }
 
-    protected void plotln(String text){
+    public void plotln(String text){
         System.out.println(text);
     }
 

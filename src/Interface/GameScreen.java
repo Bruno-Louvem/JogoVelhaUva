@@ -2,6 +2,7 @@ package Interface;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -32,6 +33,7 @@ public class GameScreen extends Screen {
 
     public void invalidOption(){
         plotln("Opcao Invalida");
+
     }
 
     public void showMenu() {
@@ -49,19 +51,16 @@ public class GameScreen extends Screen {
     }
 
     public void showTabuleiro(TabuleiroInterface tabuleiro) {
-        ArrayList<Collection<Integer>> coodinates = tabuleiro.getTabuleiro();
-        for(Collection<Integer> linha : coodinates){
-
-            for(Integer col : linha){
-
-                if(col == linha.toArray()[0]){
-                    plot("   "+col+"  ");
-                }else if(col == linha.toArray()[1]){
-                    plot("|  "+col+"  |");
+        ArrayList<List<String>> coodinates = tabuleiro.getTabuleiro();
+        for(List<String> linha : coodinates){
+            int i = 0;
+            for(String col : linha){
+                if(i == 2){
+                    plotln("  "+col+"   ");
                 }else{
-                    plotln("  " + col + "   ");
+                    plot("  "+col+"  |");
                 }
-                
+                i++;
             }
             if(linha != coodinates.get(coodinates.size() - 1)) {
                 plotln(" - - - - - - - - - ");
@@ -76,5 +75,34 @@ public class GameScreen extends Screen {
         plotln("");
         plotln("Jogador da vez: "+name);
         plotln("");
+    }
+
+    public int getDificultFlag() {
+        plotln("Escolha o nivel de dificuldade?");
+        plotln("  0 - Facil");
+        plotln("  1 - Medio");
+        plotln("  2 - Dificil");
+        plotln("");
+        plot("Selecione uma opcao:");
+        Teclado = new Scanner(System.in);
+
+        return Teclado.nextInt();
+    }
+
+    public void error(String s) {
+        plotln("");
+        plotln(s);
+        plotln("");
+        plotln("");
+        plotln("");
+    }
+
+    public int getPlayerPick(TabuleiroInterface tabuleiro) {
+        this.showTabuleiro(tabuleiro);
+
+        plot("Selecione uma posicao:");
+        Teclado = new Scanner(System.in);
+
+        return Teclado.nextInt();
     }
 }

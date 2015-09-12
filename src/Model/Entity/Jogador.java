@@ -4,8 +4,8 @@ package Model.Entity;
  * Created by Bruno Louvem on 07/09/2015.
  */
 public class Jogador implements JogadorInterface{
-    private String symbol;
-    private String name;
+    protected String symbol;
+    protected String name;
 
 
     @Override
