@@ -102,6 +102,20 @@ public class JogoVelha {
         }
 
         Screen.plotln("Fim do Jogo");
+
+        this.restartGame();
+    }
+
+    private void restartGame() {
+        this.countPick = 0;
+        this.Tabuleiro.reset();
+        this.dificultChoice = "";
+        this.Starter = null;
+        this.CurrentPlayer = null;
+        this.Winner = null;
+        this.JogadorH = null;
+        this.Machine = null;
+
     }
 
     private void getMachinePick() {

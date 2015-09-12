@@ -12,4 +12,5 @@ public interface TabuleiroInterface {
     public boolean validPick(String pick);
     public void setPick(String pick,String symbol);
     public boolean symbolCompleteGoal(String symbol, List<Integer> goal);
+    public void reset();
 }

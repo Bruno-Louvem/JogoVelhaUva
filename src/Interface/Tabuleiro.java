@@ -12,11 +12,17 @@ public class Tabuleiro implements TabuleiroInterface{
     private ArrayList<List<String>> coordinates;
 
     public Tabuleiro(){
-        coordinates = new ArrayList<>();
-        coordinates.add(Arrays.asList("1","2","3"));
-        coordinates.add(Arrays.asList("4","5","6"));
-        coordinates.add(Arrays.asList("7","8","9"));
+        this.startCoordinates();
     }
+
+    public void startCoordinates(){
+        this.coordinates = new ArrayList<>();
+        this.coordinates.clear();
+        this.coordinates.add(Arrays.asList("1","2","3"));
+        this.coordinates.add(Arrays.asList("4","5","6"));
+        this.coordinates.add(Arrays.asList("7","8","9"));
+    }
+
     @Override
     public ArrayList getTabuleiro() {
         return this.coordinates;
@@ -42,8 +48,7 @@ public class Tabuleiro implements TabuleiroInterface{
         for(List<String> lin : this.coordinates){
             for(String pos: lin){
                 if(pos.equals(pick)){
-
-                    coordinates.get(coordinates.indexOf(lin)).set(lin.indexOf(pos),symbol);
+                    this.coordinates.get(this.coordinates.indexOf(lin)).set(lin.indexOf(pos),symbol);
                 }
 
             }
@@ -58,6 +63,11 @@ public class Tabuleiro implements TabuleiroInterface{
             }
         }
         return true;
+    }
+
+    @Override
+    public void reset() {
+        this.startCoordinates();
     }
 
     public String getCoordinatesByIntPos(int pos) {
