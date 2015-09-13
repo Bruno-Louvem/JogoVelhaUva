@@ -1,7 +1,8 @@
 package Interface;
 
+import Model.Entity.TabuleiroInterface;
+
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
 
@@ -56,7 +57,7 @@ public class GameScreen extends Screen {
             int i = 0;
             for(String col : linha){
                 if(i == 2){
-                    plotln("  "+col+"   ");
+                    plotln("  " + col + "   ");
                 }else{
                     plot("  "+col+"  |");
                 }
@@ -100,6 +101,19 @@ public class GameScreen extends Screen {
     public int getPlayerPick(TabuleiroInterface tabuleiro) {
         this.showTabuleiro(tabuleiro);
 
+        plot("Selecione uma posicao:");
+        Teclado = new Scanner(System.in);
+
+        return Teclado.nextInt();
+    }
+
+    public int getInitSymbolFlag() {
+        plotln("");
+        plotln("");
+        plotln("Deseja jogar com qual simbolo?");
+        plotln("");
+        plotln("1 - (X)      |       2 - (O)");
+        plotln("");
         plot("Selecione uma posicao:");
         Teclado = new Scanner(System.in);
 

@@ -1,13 +1,12 @@
 package Controller;
 
 import Interface.GameScreen;
-import Interface.Tabuleiro;
-import Interface.TabuleiroInterface;
+import Model.Entity.Tabuleiro;
+import Model.Entity.TabuleiroInterface;
 import Model.Entity.Jogador;
 import Model.Entity.JogadorHumano;
 import Model.Entity.Machine;
 
-import java.lang.management.ThreadInfo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -120,14 +119,29 @@ public class JogoVelha {
 
     private void getMachinePick() {
         boolean flag = false;
+
         do {
             Random rand = new Random();
-            String pick = ""+(rand.nextInt(9) + 1);
+            String pick;
+            if(dificultChoice.contains("FACIL")){
+                pick = ""+(rand.nextInt(9) + 1);
+            }else if(dificultChoice.contains("MEDIO")){
+                int desicion = rand.nextInt(2);
+                if(desicion == 0) {
+                    pick = "" + (rand.nextInt(9) + 1);
+                }else{
+                    pick = this.Machine.getIE().getPick(Tabuleiro,JogadorH,Machine);
+                }
+            }else{
+                pick = this.Machine.getIE().getPick(Tabuleiro,JogadorH,Machine);
+            }
+
             if(this.Tabuleiro.validPick(pick)){
                 flag = true;
                 this.Tabuleiro.setPick(pick, this.Machine.getSymbol());
             }
         }while (!flag);
+
     }
 
     private void getHumanPlayerPick() {
@@ -145,9 +159,9 @@ public class JogoVelha {
 
     private boolean analyzeStateTabuleiro(){
         this.countPick++;
-        ArrayList<List<Integer>> goals = this.Machine.getIE().getKB().getGoals();
+        ArrayList<List<String>> goals = this.Machine.getIE().getKB().getGoals();
 
-        for(List<Integer> goal: goals){
+        for(List<String> goal: goals){
             if(this.Tabuleiro.symbolCompleteGoal(this.CurrentPlayer.getSymbol(),goal)){
                 this.Winner = CurrentPlayer;
                 return false;
@@ -177,8 +191,13 @@ public class JogoVelha {
 
         //setando quem começa
         StarterPlayer = this.getInitPlayer();
+
+        //setando qual o simbolo de jogada
+        StarterPlayer = this.getInitSymbol();
         return StarterPlayer;
     }
+
+
 
 
     //Instancia os objetos dos Jogadores
@@ -190,7 +209,7 @@ public class JogoVelha {
     public JogadorHumano createPlayer(String playerName){
         JogadorHumano player = new JogadorHumano();
         player.setName(playerName);
-        player.setSymbol("O");
+        //player.setSymbol("O");
         return player;
     }
     // Cria um objeto Maquina
@@ -199,7 +218,7 @@ public class JogoVelha {
         try{
             InferenceEngine IE = new InferenceEngine();
             machine.setName(playerName);
-            machine.setSymbol("X");
+            //machine.setSymbol("X");
             machine.setIE(IE);
 
         }catch (Exception e){
@@ -207,6 +226,31 @@ public class JogoVelha {
         }
         return machine;
 
+    }
+    private boolean getInitSymbol() {
+        boolean flag = false;
+
+        do{
+            int opt = Screen.getInitSymbolFlag();
+            switch (opt) {
+                case 1:
+                    JogadorH.setSymbol("X");
+                    Machine.setSymbol("O");
+                    flag = true;
+                    break;
+                case 2:
+                    JogadorH.setSymbol("O");
+                    Machine.setSymbol("X");
+                    flag = true;
+                    break;
+                default:
+                    Screen.clean();
+                    Screen.invalidOption();
+                    break;
+            }
+        }while (!flag);
+
+        return flag;
     }
     //Seta quem começa
     public boolean getInitPlayer() {
