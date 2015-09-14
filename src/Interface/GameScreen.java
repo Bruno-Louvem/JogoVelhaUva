@@ -119,4 +119,17 @@ public class GameScreen extends Screen {
 
         return Teclado.nextInt();
     }
+
+    public int getNewFastGame() {
+        plotln("");
+        plotln("");
+        plotln("Deseja mais um jogo rapido?");
+        plotln("");
+        plotln("0 - (NAO)      |       1 - (SIM)");
+        plotln("");
+        plot("Selecione uma opcao:");
+        Teclado = new Scanner(System.in);
+
+        return Teclado.nextInt();
+    }
 }

@@ -91,6 +91,12 @@ public class InferenceEngine {
         }
 
         if(picksOpponent.size() != 0){
+            if(picksOpponent.size() == 1){
+                if(picksOpponent.contains("5")){
+                    return ""+getRandomPar();
+                }
+                return "5";
+            }
             if((Integer.parseInt(picksOpponent.get(picksOpponent.size()-1)) % 5) == 0){
                 return ""+getRandomImpar();
             }
@@ -104,7 +110,7 @@ public class InferenceEngine {
                 return "5";
             }
             if((Integer.parseInt(picksOpponent.get(picksOpponent.size()-1)) % 2) == 0){
-                return ""+getRandomPar();
+                return ""+getRandomImpar();
             }
         }else{
             return "5";

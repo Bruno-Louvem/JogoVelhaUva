@@ -75,6 +75,44 @@ public class JogoVelha {
         this.Machine.getIE().setDificultChoice(this.dificultChoice);
         Tabuleiro = new Tabuleiro();
         this.CurrentPlayer = Starter;
+//        Jogador nextPlayer;
+//        boolean runningGame = true;
+
+        this.play();
+
+//        do{
+//            if(this.CurrentPlayer instanceof Machine){
+//                this.getMachinePick();
+//                nextPlayer = this.JogadorH;
+//            }else{
+//                this.getHumanPlayerPick();
+//                nextPlayer = this.Machine;
+//            }
+//
+//            runningGame = this.analyzeStateTabuleiro();
+//
+//            this.CurrentPlayer = nextPlayer;
+//        }while (runningGame);
+
+//        Screen.showTabuleiro(Tabuleiro);
+
+//        if(this.Winner instanceof JogadorHumano || this.Winner instanceof Machine){
+//            Screen.plotln("Jogador vencedor:"+this.Winner.getName());
+//        }else{
+//            Screen.plotln("Deu Velha!!!");
+//        }
+//        Screen.plotln("Fim do Jogo");
+//        if(this.getFastNewGame()){
+//            this.partialRestart();
+//            this.play();
+//        }
+
+
+
+        this.restartGame();
+    }
+
+    public void play(){
         Jogador nextPlayer;
         boolean runningGame = true;
 
@@ -91,7 +129,6 @@ public class JogoVelha {
 
             this.CurrentPlayer = nextPlayer;
         }while (runningGame);
-
         Screen.showTabuleiro(Tabuleiro);
 
         if(this.Winner instanceof JogadorHumano || this.Winner instanceof Machine){
@@ -99,10 +136,18 @@ public class JogoVelha {
         }else{
             Screen.plotln("Deu Velha!!!");
         }
-
         Screen.plotln("Fim do Jogo");
+        if(this.getFastNewGame()){
+            this.partialRestart();
+            this.play();
+        }
+    }
 
-        this.restartGame();
+    private void partialRestart() {
+        this.Tabuleiro.reset();
+        this.countPick = 0;
+        this.Winner = null;
+        this.Starter = this.CurrentPlayer;
     }
 
     private void restartGame() {
@@ -175,6 +220,31 @@ public class JogoVelha {
         return true;
     }
 
+    private boolean getFastNewGame() {
+        boolean flag = false;
+        boolean decisison = false;
+
+        do{
+            int opt = Screen.getNewFastGame();
+            switch (opt) {
+                case 0:
+                    decisison = false;
+                    flag = true;
+                    break;
+                case 1:
+                    decisison = true;
+                    flag = true;
+                    break;
+                default:
+                    Screen.clean();
+                    Screen.invalidOption();
+                    break;
+            }
+        }while (!flag);
+
+        return decisison;
+    }
+
     private boolean settingGame() {
         //pegando o nome do usuario
         String PlayerName = this.Screen.getNamePlayer();
@@ -203,7 +273,7 @@ public class JogoVelha {
     //Instancia os objetos dos Jogadores
     public void createPlayers(String PlayerName){
         this.JogadorH = createPlayer(PlayerName);
-        this.Machine = createMachine("Viccenzinho Bolado");
+        this.Machine = createMachine("Master Controll");
     }
     // Cria um objeto JogadorH
     public JogadorHumano createPlayer(String playerName){
