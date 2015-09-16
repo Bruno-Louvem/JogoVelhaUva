@@ -113,26 +113,59 @@ public class InferenceEngine {
                 }
                 //a ultima jogada dele foi em uma quina?
                 if((Integer.parseInt(picksOpponent.get(picksOpponent.size()-1)) % 2) == 1){
-
+                    //pega do tabuleiro as posições vazias
                     ArrayList<String> clearPos = tabuleiro.getClearPosition();
+                    ArrayList<String> quinas = new ArrayList<String>();
+                    ArrayList<String> arestas = new ArrayList<String>();
                     for (String pos:clearPos){
+                        //verifica se possuem posições impares vazias (quinas)
                         if((Integer.parseInt(pos) % 2) == 1){
-                            return pos;
-                        }else{
-                            return ""+getRandomPar();
+                            quinas.add(pos);
+                        }else{//Se não restaram quinas vazias joga um par randomico
+                            arestas.add(pos);
                         }
                     }
 
-                }
-                if((Integer.parseInt(picksOpponent.get(picksOpponent.size()-1)) % 2) == 0){
-
-                    ArrayList<String> clearPos = tabuleiro.getClearPosition();
-                    for (String pos:clearPos){
-                        if((Integer.parseInt(pos) % 2) == 1){
-                            return pos;
-                        }else{
-                            return ""+getRandomPar();
+                    if(picksOpponent.size() == 2){
+                        if((picksOpponent.contains("1") && picksOpponent.contains("9")) || (picksOpponent.contains("3")&& picksOpponent.contains("7"))){
+                            for (String aresta:arestas){
+                                return aresta;
+                            }
                         }
+                    }else{
+                        for(String quina: quinas){
+                            return quina;
+                        }
+
+                        for (String aresta:arestas){
+                            return aresta;
+                        }
+                    }
+
+
+
+                }
+                //a ultima jogada dele foi em uma posição par?
+                if((Integer.parseInt(picksOpponent.get(picksOpponent.size()-1)) % 2) == 0){
+                    //pega do tabuleiro as posições vazias
+                    ArrayList<String> clearPos = tabuleiro.getClearPosition();
+                    ArrayList<String> quinas = new ArrayList<String>();
+                    ArrayList<String> arestas = new ArrayList<String>();
+                    for (String pos:clearPos){
+                        //verifica se possuem posições impares vazias (quinas)
+                        if((Integer.parseInt(pos) % 2) == 1){
+                            quinas.add(pos);
+                        }else{//Se não restaram quinas vazias joga um par randomico
+                            arestas.add(pos);
+                        }
+                    }
+
+                    for(String quina: quinas){
+                        return quina;
+                    }
+
+                    for (String aresta:arestas){
+                        return aresta;
                     }
                 }
             }

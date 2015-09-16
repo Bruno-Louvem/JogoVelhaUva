@@ -37,7 +37,7 @@ public class JogoVelha {
 
 
     //inicio do Jogo
-    public void init()
+        public void init()
     {
         int selection = 0;
 
