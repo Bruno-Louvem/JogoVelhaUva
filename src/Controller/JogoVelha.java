@@ -147,6 +147,10 @@ public class JogoVelha {
         this.Tabuleiro.reset();
         this.countPick = 0;
         this.Winner = null;
+        String machineSymbol = Machine.getSymbol();
+        this.Machine = null;
+        this.Machine = createMachine("Master Controll");
+        this.Machine.setSymbol(machineSymbol);
         this.Starter = this.CurrentPlayer;
     }
 

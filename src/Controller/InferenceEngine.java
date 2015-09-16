@@ -41,13 +41,17 @@ public class InferenceEngine {
         return KB;
     }
 
+    public void restart(){
+
+    }
+
     public void setDificultChoice(String dificultChoice) {
         this.dificultChoice = dificultChoice;
     }
 
     public String getPick(TabuleiroInterface tabuleiro,Jogador opponent,Jogador machine){
         analyze(tabuleiro, opponent, machine);
-        return decide();
+        return decide(tabuleiro);
     }
     private void analyze(TabuleiroInterface tabuleiro,Jogador opponent,Jogador machine){
         tabuleiro.getPicksBySymbol(picksOpponent, opponent.getSymbol());
@@ -56,19 +60,19 @@ public class InferenceEngine {
         this.getMyPossiblesGoals();
         this.loadNPByGoal(possibleGoalsOpponent, picksOpponent,npsByOppoendGoals);
         this.loadNPByGoal(myPossibleGoals, myPicks, npsByMyGoals);
-//        System.out.println("Possiveis Trajetorias do Opoente");
-//        for(List<Integer> pGoal: possibleGoalsOpponent) {
-//            System.out.print(Arrays.toString(pGoal.toArray())+" --- ");
-//            System.out.println("NP = " + npsByOppoendGoals.get(possibleGoalsOpponent.indexOf(pGoal)).get(1));
-//        }
-//        System.out.println("Minhas Possiveis Trajetorias");
-//        for(List<Integer> pGoal: myPossibleGoals) {
-//            System.out.print(Arrays.toString(pGoal.toArray())+" --- ");
-//            System.out.println("NP = " + npsByMyGoals.get(myPossibleGoals.indexOf(pGoal)).get(1));
-//        }
+        System.out.println("Possiveis Trajetorias do Opoente");
+        for(List<Integer> pGoal: possibleGoalsOpponent) {
+            System.out.print(Arrays.toString(pGoal.toArray())+" --- ");
+            System.out.println("NP = " + npsByOppoendGoals.get(possibleGoalsOpponent.indexOf(pGoal)).get(1));
+        }
+        System.out.println("Minhas Possiveis Trajetorias");
+        for(List<Integer> pGoal: myPossibleGoals) {
+            System.out.print(Arrays.toString(pGoal.toArray())+" --- ");
+            System.out.println("NP = " + npsByMyGoals.get(myPossibleGoals.indexOf(pGoal)).get(1));
+        }
     }
 
-    private String decide(){
+    private String decide(TabuleiroInterface tabuleiro){
         if(getGreaterNP(npsByMyGoals) == 2){
             ArrayList<List<String>> goals = getGoalByGreaterNP(npsByMyGoals,myPossibleGoals);
             for(List<String> goal:goals){
@@ -90,29 +94,50 @@ public class InferenceEngine {
             }
         }
 
-        if(picksOpponent.size() != 0){
-            if(picksOpponent.size() == 1){
-                if(picksOpponent.contains("5")){
-                    return ""+getRandomPar();
+        if(picksOpponent.size() != 0){//o JogadorH ja jogou
+            if(picksOpponent.size() == 1 && myPicks.size()==0){//o JogadorH nesse caso começou é a minha primeira jogada.
+                //A primeira jogada do humano foi no meio?
+                if((Integer.parseInt(picksOpponent.get(picksOpponent.size()-1)) % 5) == 0){
+                    return ""+getRandomImpar(); //jogo em uma quina qualquer
+
+                }else if((Integer.parseInt(picksOpponent.get(picksOpponent.size()-1)) % 2) == 1){// A primeira jogada do humano foi em uma quina?
+                    return "5";//jogo no meio
+                }else{ // nesse caso o humano jogou em uma pos. par {2,4,6 ou 8}
+                    return "5";//jogo no meio
                 }
-                return "5";
-            }
-            if((Integer.parseInt(picksOpponent.get(picksOpponent.size()-1)) % 5) == 0){
-                return ""+getRandomImpar();
-            }
-            if((Integer.parseInt(picksOpponent.get(picksOpponent.size()-1)) % 2) == 1){
-                if(picksOpponent.contains("5")){
-                    return ""+getRandomPar();
-                }
-                if(myPicks.contains("5")){
+
+            }else{// o humano ja jogou a primeira vez e eu tambem
+                //a ultima jogada dele foi no meio? (quase impossivel)
+                if((Integer.parseInt(picksOpponent.get(picksOpponent.size()-1)) % 5) == 0){
                     return ""+getRandomImpar();
                 }
-                return "5";
+                //a ultima jogada dele foi em uma quina?
+                if((Integer.parseInt(picksOpponent.get(picksOpponent.size()-1)) % 2) == 1){
+
+                    ArrayList<String> clearPos = tabuleiro.getClearPosition();
+                    for (String pos:clearPos){
+                        if((Integer.parseInt(pos) % 2) == 1){
+                            return pos;
+                        }else{
+                            return ""+getRandomPar();
+                        }
+                    }
+
+                }
+                if((Integer.parseInt(picksOpponent.get(picksOpponent.size()-1)) % 2) == 0){
+
+                    ArrayList<String> clearPos = tabuleiro.getClearPosition();
+                    for (String pos:clearPos){
+                        if((Integer.parseInt(pos) % 2) == 1){
+                            return pos;
+                        }else{
+                            return ""+getRandomPar();
+                        }
+                    }
+                }
             }
-            if((Integer.parseInt(picksOpponent.get(picksOpponent.size()-1)) % 2) == 0){
-                return ""+getRandomImpar();
-            }
-        }else{
+
+        }else{//se jogador humano n tem jogadas eu sou o primeiro a jogar e escolho o meio
             return "5";
         }
 

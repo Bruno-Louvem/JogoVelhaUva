@@ -15,4 +15,5 @@ public interface TabuleiroInterface {
     public void getPicksBySymbol(ArrayList<String> picks,String symbol);
     public void reset();
     public String getPosByCoordinates(int lin, int col);
+    public ArrayList<String> getClearPosition();
 }

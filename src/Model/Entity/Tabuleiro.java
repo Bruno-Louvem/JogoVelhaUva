@@ -30,6 +30,17 @@ public class Tabuleiro implements TabuleiroInterface {
         this.fixCoordinates.add(Arrays.asList("7", "8", "9"));
     }
 
+    public ArrayList<String> getClearPosition(){
+        ArrayList<String> clearPos = new ArrayList<String>();
+        for(List<String> lin : this.coordinates){
+            for(String pos: lin){
+                if(!pos.equals("X")&&!pos.equals("O"))
+                    clearPos.add(pos);
+            }
+        }
+        return clearPos;
+    }
+
     @Override
     public ArrayList getTabuleiro() {
         return this.coordinates;
